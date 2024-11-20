@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class EsdMiniApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(EsdMiniApplication.class, args);
+            SpringApplication.run(EsdMiniApplication.class, args);
     }
 
 }
