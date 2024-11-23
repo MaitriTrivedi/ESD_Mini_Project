@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
+
 import java.math.BigDecimal;
 import java.time.Year;
 
@@ -13,6 +15,7 @@ import java.time.Year;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Component
 @Table(name = "students")
 public class Students {
 
@@ -22,8 +25,8 @@ public class Students {
 
         private String password;
 
-        @Column(unique = true)
-        private int rollNumber;
+        @Column(nullable = false, unique = true)
+        private Integer rollNumber;
 
         private String firstName;
         private String lastName;
@@ -33,17 +36,17 @@ public class Students {
         private BigDecimal cgpa;
         private int totalCredits;
 
-        private Integer graduationYear;
+        private int graduationYear;
 
         @ManyToOne
-        @JoinColumn(name = "domain_id")
+        @JoinColumn(name = "domain_id", nullable = true)
         private Domain domain;
 
         @ManyToOne
-        @JoinColumn(name = "specialisation_id")
+        @JoinColumn(name = "specialisation_id", nullable = true)
         private Specialisation specialisation;
 
         @ManyToOne
-        @JoinColumn(name = "placement_id")
+        @JoinColumn(name = "placement_id", nullable = true)
         private Placements placement;
 }

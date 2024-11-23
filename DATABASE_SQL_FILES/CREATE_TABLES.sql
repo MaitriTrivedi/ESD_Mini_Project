@@ -8,7 +8,7 @@ CREATE TABLE Students (
     photograph_path VARCHAR(255),
     cgpa DECIMAL(3, 2),
     total_credits INT,
-    graduation_year INT,
+    graduation_year year,
     domain_id INT,
     specialisation_id INT,
     placement_id INT
@@ -19,7 +19,7 @@ CREATE TABLE Courses (
     course_code VARCHAR(20) UNIQUE NOT NULL,
     name VARCHAR(100) NOT NULL,
     description TEXT,
-    year YEAR NOT NULL,
+    year INT NOT NULL,
     term INT NOT NULL,
     faculty VARCHAR(500),
     credits INT NOT NULL,

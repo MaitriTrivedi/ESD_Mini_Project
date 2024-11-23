@@ -1,5 +1,7 @@
 package com.maitri.esd_mini.controller;
 
+import com.maitri.esd_mini.dto.EnrollStudentRequest;
+import com.maitri.esd_mini.dto.ShowCoursesRequest;
 import com.maitri.esd_mini.dto.StudentRequest;
 import com.maitri.esd_mini.entity.Courses;
 import com.maitri.esd_mini.service.LoginService;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 @RequiredArgsConstructor
@@ -25,15 +28,20 @@ public class StudentController {
     // final : it will create only one object in whole project container, when we run the project
     private final StudentService studentService;
 
-    @PostMapping("/show_courses")
-    public ResponseEntity<Courses> showCourses(@RequestBody @Valid StudentRequest studentRequest) {
+    @GetMapping("/show_courses")
+    public ResponseEntity<List<Map<String, Object>> > Student(@RequestBody @Valid ShowCoursesRequest studentRequest) {
         return ResponseEntity.ok(studentService.showAllowedCourses(studentRequest));
     }
 
-    @PostMapping("/create_account") // for post request
-    public ResponseEntity<Students> createCustomer(@RequestBody @Valid StudentRequest studentRequest) {
+    @PostMapping("/create_account")
+    public ResponseEntity<String> createStudent(@RequestBody @Valid StudentRequest studentRequest) {
         System.out.println("==================== create controller");
         return ResponseEntity.ok(studentService.createStudent(studentRequest));
+    }
+
+    @PostMapping("/enroll")
+    public ResponseEntity<String> enrollStudent(@RequestBody @Valid EnrollStudentRequest enrollStudentRequest) {
+        return ResponseEntity.ok(studentService.enrollStudent(enrollStudentRequest));
     }
 
 }
