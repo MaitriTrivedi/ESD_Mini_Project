@@ -1,11 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { fetchLogin } from '../utils/login';
+import { useNavigate } from 'react-router-dom';
+import config from '../config';
 
 function SigninCard() {
+  var [email, setEmail ] = useState('');
+  var [password, setPassword ] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate(); 
+  const API_URL = config || "http://localhost:8080";
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent default form submission
+    try {
+      const response = await fetchLogin(email, password);
+      if (response.success) {
+        setErrorMessage(''); // Clear any error messages
+        navigate('/enroll'); // Navigate to the /enroll page
+      } else {
+        setErrorMessage(response.message); // Show error message
+      }
+    } catch (err) {
+      setErrorMessage(err.message); // Display error message
+      // setSuccess('');
+    }
+  };
+
   return (
     <>
       <div className="signin-container">
         <div className="sign-up">
-          <form className="signup-form">
+          <form className="signup-form" onSubmit={handleSubmit}>
             <h3 id="sign_up_header">Sign In</h3>
             <div className="mb-3">
               <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
@@ -15,6 +40,8 @@ function SigninCard() {
                 id="exampleInputEmail1"
                 placeholder="Email Address"
                 aria-describedby="emailHelp"
+                value={email}
+                onChange={(e)=>setEmail(e.target.value)}
               />
             </div>
             <div className="mb-3">
@@ -24,10 +51,14 @@ function SigninCard() {
                 className="form-control"
                 placeholder="Password"
                 id="exampleInputPassword1"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
+              <p>Testing : {email} {password} {API_URL}</p>
             </div>
             <button type="submit" className="btn btn-primary">Sign In</button>
-          </form>
+            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+          </form >
         </div>
       </div>
     </>

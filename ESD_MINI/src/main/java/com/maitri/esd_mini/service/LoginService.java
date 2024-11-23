@@ -1,6 +1,7 @@
 package com.maitri.esd_mini.service;
 
 import com.maitri.esd_mini.dto.LoginRequest;
+import com.maitri.esd_mini.dto.LoginResponse;
 import com.maitri.esd_mini.entity.Students;
 import com.maitri.esd_mini.helper.EncryptionService;
 import com.maitri.esd_mini.helper.JWTHelper;
@@ -20,21 +21,26 @@ public class LoginService {
     private final EncryptionService encryptionService;
     private final JWTHelper jwtHelper;
 
-    public String loginUser(LoginRequest request) {
+    public LoginResponse loginUser(LoginRequest request) {
         Students customer = mapper.toEntity(request);
+
         // Attempt to find the customer in the database
         Optional<Students> existingCustomer = repo.findByEmail(customer.getEmail());
+        System.out.println("-------LOGIN SERVICE");
 
         if (existingCustomer.isPresent()) {
-            // Check if the password matches
-            if(!encryptionService.validates(request.password(), existingCustomer.get().getPassword())) {
-                return "Wrong Password or Email";
-            }
-            else {
-                return jwtHelper.generateToken(request.email());
+            System.out.println("-------LOGIN SERVICE1");
+            if (!encryptionService.validates(request.password(), existingCustomer.get().getPassword())) {
+                System.out.println("-------LOGIN SERVICE2");
+                return new LoginResponse(false, "Wrong Password", null);
+            } else {
+                System.out.println("-------LOGIN SERVICE3");
+                String token = jwtHelper.generateToken(request.email());
+                return new LoginResponse(true, "Login successful", token);
             }
         } else {
-            return "User not found";
+            System.out.println("-------LOGIN SERVICE4");
+            return new LoginResponse(false, "User not found", null);
         }
     }
 }
