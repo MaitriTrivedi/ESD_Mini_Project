@@ -9,4 +9,5 @@ public class LoginResponse {
     private boolean success;
     private String message;
     private String token;
+    private Integer student_id;
 }

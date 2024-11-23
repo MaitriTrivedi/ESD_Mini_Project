@@ -48,14 +48,15 @@ public class StudentService {
         this.coursePrerequisiteRepository = coursePrerequisiteRepository;
     }*/
 
-    public List<Map<String, Object>> showAllowedCourses(ShowCoursesRequest request) {
+    public List<Map<String, Object>> showAllowedCourses(String student_id) {
         System.out.println("==================== create service");
+        int studentId = Integer.parseInt(student_id);
 
         List<Courses> all_courses = coursesRepo.findAll();
         List<Map<String, Object>> result = new ArrayList<>();
         for (Courses course : all_courses) {
-            if(!studentCourseRepository.existsByStudentAndCourse(request.studentId(), course.getCourse_id())
-            && (coursePrerequisiteRepository.findUnmetPrerequisites(request.studentId(), course.getCourse_id()).isEmpty())){
+            if(!studentCourseRepository.existsByStudentAndCourse(studentId, course.getCourse_id())
+            && (coursePrerequisiteRepository.findUnmetPrerequisites(studentId, course.getCourse_id()).isEmpty())){
                 Map<String, Object> courseMap = new HashMap<>();
                 courseMap.put("courseId", course.getCourse_id());
                 courseMap.put("courseName", course.getCourseCode());

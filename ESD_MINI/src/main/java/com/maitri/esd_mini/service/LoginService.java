@@ -32,15 +32,15 @@ public class LoginService {
             System.out.println("-------LOGIN SERVICE1");
             if (!encryptionService.validates(request.password(), existingCustomer.get().getPassword())) {
                 System.out.println("-------LOGIN SERVICE2");
-                return new LoginResponse(false, "Wrong Password", null);
+                return new LoginResponse(false, "Wrong Password", null, null);
             } else {
                 System.out.println("-------LOGIN SERVICE3");
                 String token = jwtHelper.generateToken(request.email());
-                return new LoginResponse(true, "Login successful", token);
+                return new LoginResponse(true, "Login successful", token, existingCustomer.get().getStudentId());
             }
         } else {
             System.out.println("-------LOGIN SERVICE4");
-            return new LoginResponse(false, "User not found", null);
+            return new LoginResponse(false, "User not found", null, null);
         }
     }
 }

@@ -23,14 +23,16 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/student")
+@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS})
 public class StudentController {
 
     // final : it will create only one object in whole project container, when we run the project
     private final StudentService studentService;
 
     @GetMapping("/show_courses")
-    public ResponseEntity<List<Map<String, Object>> > Student(@RequestBody @Valid ShowCoursesRequest studentRequest) {
-        return ResponseEntity.ok(studentService.showAllowedCourses(studentRequest));
+    public ResponseEntity<List<Map<String, Object>>> showCourses(
+            @RequestParam String studentId) {
+        return ResponseEntity.ok(studentService.showAllowedCourses(studentId));
     }
 
     @PostMapping("/create_account")
