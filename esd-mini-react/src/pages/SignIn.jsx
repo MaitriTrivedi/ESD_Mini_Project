@@ -1,8 +1,23 @@
-import React, { useEffect } from 'react'
+import React, { useEffect , useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar'
 import SigninCard from '../components/SigninCard'
 
 function SignIn() {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+    // Check login status on component mount
+  useEffect(() => {
+    const loggedInStatus = localStorage.getItem('isLoggedIn') === 'true';
+    setIsLoggedIn(loggedInStatus);
+
+    // If already logged in, redirect to the /enroll page
+    if (loggedInStatus) {
+      navigate('/enroll');
+    }
+  }, [navigate]);
 
   useEffect(
     ()=>{
@@ -11,9 +26,6 @@ function SignIn() {
       .then(json => console.log(json))
     },[]);
 
-  function handleClick(){
-    console.log("Clickedddd")
-  };
   return (
     <>
       <Navbar />

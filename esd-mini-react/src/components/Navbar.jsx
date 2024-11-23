@@ -1,6 +1,25 @@
-import React from 'react';
+import React, { useState , useEffect} from 'react';
 
 function Navbar() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    // Check login status on component mount
+    useEffect(() => {
+        const loggedInStatus = localStorage.getItem('isLoggedIn') === 'true';
+        setIsLoggedIn(loggedInStatus);
+    }, []);
+
+    // Logout function
+    const handleLogout = () => {
+      // Clear login-related data from localStorage
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+
+      // Update state to reflect logout
+      setIsLoggedIn(false);
+  };
+
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -33,11 +52,20 @@ function Navbar() {
               </li>
             </ul>
             <ul className="navbar-nav ms-auto">
-              <li className="nav-item">
-                <a className="nav-link" href="/signin">
-                  Login
-                </a>
-              </li>
+              {!isLoggedIn && (
+                <li className="nav-item">
+                  <a className="nav-link" href="/signin">
+                    Log in
+                  </a>
+                </li>
+              )}
+              {isLoggedIn && (
+                <li className="nav-item">
+                  <button className="btn btn-link nav-link" onClick={handleLogout}>
+                    Logout
+                  </button>
+                </li>
+              )}
             </ul>
           </div>
 
